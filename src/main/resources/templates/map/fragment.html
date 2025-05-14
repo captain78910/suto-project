@@ -1,0 +1,17 @@
+<!-- src/main/resources/templates/lecture/fragment.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fragment</title>
+</head>
+<body>
+
+<!-- "fragment" という名前で定義されたパーツ -->
+<div th:fragment="fragment">
+    <ul>
+        <li th:each="date : ${weeklyDate}" th:text="${date}"></li>
+    </ul>
+</div>
+
+</body>
+</html>

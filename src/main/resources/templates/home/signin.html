@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--/*
+	thから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性を追加して、IDLが警告を出さないようにしている。
+ */-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>サインイン</title>
+</head>
+<body>
+		<h1>サインイン</h1>
+		<!--/*登録ボタンをクリックした際に/signinに対してPOSTメソッドでHTTPリクエストする*/-->
+		<form method ="post" th:action="@{/signin}" th:object="${createLoginUserForm}">
+			<div>
+				<label for="user-name">ユーザー名</label>
+				<input id="user-name" type="text" placeholder="ユーザー名" th:field="*{userName}">
+				<!--/*バリデーションエラーがある場合はエラー内容を表示しる*/-->
+				<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red"></span>
+			</div>
+			
+			<div>
+				<label for="password">パスワード</label>
+				<input id="password" type="password" placeholder="パスワード" th:field="*{password}">
+				<!--/*バリデーションエラーがある場合はエラー内容を表示しる*/-->
+				<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red"></span>
+			</div>
+			
+			<button type="submit">登録</button>
+			
+		</form>
+		
+		<!--/*ホーム画面へ遷移するためのリンク*/-->
+		<a href="index.html" th:fref="@{/}">戻る</a>
+</body>
+</html>

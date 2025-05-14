@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--/*
+	thから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性を追加して、IDLが警告を出さないようにする。
+*/-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>ToDo詳細</title>
+</head>
+<body>
+	<h1>ToDo詳細</h1>
+	<!--/* ログアウトボタンをクリックした際に /logout に対してPOSTメソッドでHTTPリクエストするためのフォーム。 */-->
+		<form method="post" th:action="@{/logout}">
+			<button type="submit">ログアウト</button>
+		</form>
+	
+		<!--/* 変数taskの値をh2タグとpタグのボディとしてレンダリングする。 */-->
+		<h2 th:text="${task.getTaskName()}"></h2>
+		<p th:text="${task.isCompleted() ? '完了' : '未完了'}"></p>
+		
+		<!--/* 削除ボタンをクリックした際に /todo/{taskId}/delete に対してPOSTメソッドでHTTPリクエストするためのフォーム。 */-->
+			<form method="post" th:action="@{/todo/{id}/delete(id=${task.getTaskId()})}">
+				<button type="submit" th:onclick="return confirm('本当に削除しますか？')">削除</button>
+			</form>
+			
+		<!--/* 編集画面へ遷移するためのリンク。 */-->
+		<a href="edit.html" th:href="@{/todo/{id}/edit(id=${task.getTaskId()})}">編集</a>
+		<!--/* 一覧画面へ遷移するためのリンク。 */-->
+		<a href="index.html" th:href="@{/todo/}">戻る</a>
+
+</body>
+</html>

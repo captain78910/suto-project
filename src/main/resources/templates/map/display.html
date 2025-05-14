@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--/*
+	thから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性を追加して、IDLが警告を出さないようにしている。
+ */-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Google map</title>
+	<link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+<body>
+	<h1>Map</h1>
+		
+		
+		
+		<hr/>
+		
+		
+				
+		<div id="map" class="w-full h-96 mb-4"></div>
+		
+		
+		<script defer th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} +'&language=ja&loading=async&libraries=marker&callback=initMap'"></script>
+		<script th:src="@{/javascript/lecture.js}"></script>
+		
+		
+
+</body>
+</html>

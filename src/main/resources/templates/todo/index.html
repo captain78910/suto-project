@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--/*
+	thから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性を追加して、IDLが警告を出さないようにする。
+*/-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>ToDo一覧</title>
+</head>
+<body>
+	<h1>ToDo一覧</h1>
+	<!--/*ログアウトボタンをクリックした際に/logoutに対してPOSTメソッドでHTTPリクエストする*/-->
+	<form method="post" th:action="@{/logout}">
+		<button type="submit">ログアウト</button>
+	</form>
+	
+	<a href="create.html" th:href="@{/todo/create}">新規作成</a>
+	<!--/*変数taskskが空の場合にレンダリングする。*/-->
+	<p th:if="${tasks.isEmpty()}">タスクはありません。</p>
+	<table>
+			<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">タスク名</th>
+						<th scope="col">完了</th>
+					</tr>
+			</thead>
+			<tbody>
+				<!--/*変数tasksの0番目から最後まで取得した要素を変数tasksに代入する。*/-->
+				<!--/*変数taskの値をliタグのボディとしてレンダリングする。*/-->
+				<tr th:each="task:${tasks}">
+					<th scope="row" th:text="${task.getTaskId()}"></th>
+					<td>
+						<!--/*詳細画面へ遷移するリンク*/-->
+						<a th:href="@{/todo/{id}(id=${task.getTaskId()})}"th:text="${task.getTaskName()}"></a>
+					<td th:text="${task.isCompleted() ? '完了':'未完了'}"></td>
+				</tr>
+			</tbody>
+	</table>
+					
+</body>
+</html>

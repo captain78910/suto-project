@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--/*
+	thから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性を追加して、IDLが警告を出さないようにしている。
+ */-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ToDo作成</title>
+</head>
+<body>
+	<h1>ToDo作成</h1>
+	<!--/* ログアウトボタンをクリックした際に /logout に対してPOSTメソッドでHTTPリクエストするためのフォーム。 */-->
+		<form method="post" th:action="@{/logout}">
+			<button type="submit">ログアウト</button>
+		</form>
+	
+	
+	<!--/*登録ボタンをクリックした際に/todo/registerに対してPOSTメソッドでHTTPリクエストするためのフォーム*/-->
+	<form method="post" th:action="@{/todo/register}" th:object="${createTaskForm}">
+		<label for="task-name">タスク名</label>
+		<!--/*
+			nameの値はth:actionで指定したパスからマッピングされるメソッドの引数名と一致させる。
+			/todo/registerはToDoController.register()にマッピングされるため、引数名のtaskNameを指定する。
+		*/-->
+		<input id="task-name" type="text" placeholder="タスク名" th:field="*{taskName}">
+		<!--/*バリデーションエラーがある場合はエラー内容を表示する*/-->
+		<span th:if="${#fields.hasErrors('taskName')}" th:errors="*{taskName}" style="color:red;"></span>
+		
+		<button type="submit">登録</button>
+	</form>
+	<!--/*一覧画面へ遷移するためのリンク。*/-->
+	<a href="index.html" th:href="@{/todo/}">戻る</a>
+</body>
+</html>

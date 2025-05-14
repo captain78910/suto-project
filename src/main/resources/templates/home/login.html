@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--/*
+	th,secから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性とxmlns:sec属性を追加して、IDLが警告を出さないようにしている。
+ */-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+</head>
+	
+<!--/* ログインエラーがある場合はエラー内容を表示する。 */-->
+<span th:if="${param.error}" style="color: red;">ユーザ名またはパスワードが間違っています</span>
+<!--/* ログインボタンをクリックした際に /login に対してPOSTメソッドでHTTPリクエストするためのフォーム。 */-->
+<form method="post" th:action="@{/login}">
+	<div>
+		<label for="username">ユーザー名</label>
+		<input id="username" type="text" name="username" placeholder="ユーザー名"/>
+	</div>
+
+	<div>
+		<label for="password">パスワード</label>
+		<input id="password" type="password" name="password" placeholder="パスワード"/>
+	</div>
+
+	<button type="submit">ログイン</button>
+</form>
