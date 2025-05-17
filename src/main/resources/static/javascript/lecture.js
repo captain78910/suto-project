@@ -40,3 +40,22 @@ function initMap() {
       });
 }
 
+			document.getElementById("modal-open-button").addEventListener("click", () => {
+				const overlay = document.getElementById("overlay");
+				overlay.classList.remove("hidden");
+			
+				setTimeout(() => {
+					if (!mapInitialized) {
+						initMap();
+						mapInitialized = true;
+					} else {
+						google.maps.event.trigger(map, "resize");
+						map.setCenter({ lat: 35.681236, lng: 139.767125 });
+					}
+				}, 300); // 300ms後に地図初期化（モーダル表示後）
+			});
+			
+			document.getElementById("modal-close-button").addEventListener("click", () => {
+				document.getElementById("overlay").classList.add("hidden");
+			});
+			
