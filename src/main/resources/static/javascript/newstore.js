@@ -65,7 +65,7 @@ function initMap() {
 							document.getElementById("side-panel").classList.remove("hidden");
 							document.getElementById("place-name").textContent = "名前:" + placeDetails.name;
 							document.getElementById("place-address").textContent = "住所:" + placeDetails.formatted_address || "住所情報なし";
-							//							document.getElementById("place-rating").textContent = `評価: ${storeInformation.evalation ?? "なし"}`;
+						
 
 							console.log("コントローラーに渡すplaceId:", location.placeId);
 							console.log("コントローラーに渡すstoreLat:", location.lat);
