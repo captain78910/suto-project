@@ -29,7 +29,8 @@ public class WebSecurityConfig {
 			.formLogin(form -> form
 					//ログイン画面のパスを/loginに設定する
 					.loginPage("/login")
-					//ログイン画面へのアクセスを全ユーザーに許可する。
+					//ログインできたらマップページへリダイレクト
+					.defaultSuccessUrl("/lecture/display")	//ログイン画面へのアクセスを全ユーザーに許可する。
 					.permitAll()
 			)
 			//ログアウトに関する設定

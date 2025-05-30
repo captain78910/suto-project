@@ -1,60 +1,119 @@
 package jp.levtech.rookie.sutoproject.controller;
 
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jp.levtech.rookie.sutoproject.model.SutoMap;
+import jp.levtech.rookie.sutoproject.repository.mybatis.MapRepository;
 
 
 @Controller
 @RequestMapping("/lecture")
 public class LectureController {
 	
+	
+	/**
+	 * タスクを管理するリポジトリ
+	 */
+	private final MapRepository mapRepository;
+	
+	
+	public LectureController (MapRepository mapRepository) {
+		this.mapRepository = mapRepository;
+	}
+	
+	
 	@Value("${google.api.key}")
 	private String apiKey;
-	/**
-	 * ToDo一覧画面を扱う
-	 * 
+	/*
+	 * 登録店舗マップ画面
 	 * @param model モデル
 	 * @return テンプレート
 	 */
 	
 	@GetMapping("/display")
 	public String index(Model model) {
-		LocalDate today= LocalDate.now();
-			List<String> week = getOneWeek(today);
-			model.addAttribute("weeklyDate", week);
-			
-			model.addAttribute("googleApiKey",apiKey);
-			
-			
-		return "map/display";
-	}
-	
-	@GetMapping("/fragment/items")
-	public String getItemFragment(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date, Model model) {
+		model.addAttribute("googleApiKey",apiKey);
 		
-		List<String> week = getOneWeek(date);
-		model.addAttribute("weeklyDate", week);
+		List<SutoMap>storeInformation = mapRepository.findAll();
+		model.addAttribute("storeInformation",storeInformation);
 		
-		return "map/fragment :: fragment";
-	}
-	
-	private List<String> getOneWeek(LocalDate startDay) {
-		List<String> week = new ArrayList<>();
-		for(int i= 0; i<7; i++) {
-			week.add(startDay.plusDays(i).toString());
-		}
-		return week;
-	}
-	
+		return "map/display";			
 
+	}
+	
+	/*
+	 * 新規店舗登録マップ画面
+	 * @param model モデル
+	 * @return テンプレート
+	 */
+	@GetMapping("/newstore")
+	public String newstore(Model model) {
+		model.addAttribute("googleApiKey",apiKey);
+		
+		List<SutoMap>storeInformation = mapRepository.findAll();
+		model.addAttribute("storeInformation",storeInformation);
+		
+		return "map/newstore";			
+
+	}
+	
+	/**
+	 * メモを更新する。
+	 *
+	 * @param memo メモ
+	 * @param placeId プレイスID
+	 * @return テンプレート/リダイレクト
+	 */
+	@PostMapping("/update")
+	public String update(@RequestParam("memo") String memo,@RequestParam("placeId") String placeId) {
+		mapRepository.memoUpdate(memo,placeId);
+		// リダイレクトするためのHTTPレスポンスを返す。
+		return "redirect:/lecture/display";
+		
+		
+	}
+	
+	/**
+	 * 評価を更新する。
+	 *
+	 * @param taskId タスクID
+	 * @param updateTaskForm タスクを更新するためのフォーム
+	 * @param bindingResult バリデーションの結果
+	 * @return テンプレート/リダイレクト
+	 */
+	@PostMapping("/rankupdate")
+	public String evalationupdate(@RequestParam("evalation") int evalation,@RequestParam("placeId") String placeId) {
+		mapRepository.evalationUpdate(evalation,placeId);
+		// リダイレクトするためのHTTPレスポンスを返す。
+		return "redirect:/lecture/display";
+		
+		
+	}
+	
+	/**
+	 * 新規店舗を登録する。
+	 *
+	 * @param storelat 緯度
+	 * @param storelng 経度
+	 * @param placeId プレイスID
+	 * @return テンプレート/リダイレクト
+	 */
+	@PostMapping("/storeRegister")
+	public String storeRegister(@RequestParam("lat") double storeLat,@RequestParam("lng") double storeLng,@RequestParam("placeId") String placeId) {
+		mapRepository.storeRegister(storeLat,storeLng,placeId);
+		// リダイレクトするためのHTTPレスポンスを返す。
+		return "redirect:/lecture/display";
+		
+		
+	}
+	
 }

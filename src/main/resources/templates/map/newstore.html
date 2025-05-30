@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--/*
+	thから始まる属性はHTMLの仕様では許可されていない。
+	そのため、htmlタグにxmlns:th属性を追加して、IDLが警告を出さないようにしている。
+ */-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Google map</title>
+	<link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+
+<body class="h-screen m-0">
+
+	<h1 class="text-3xl font-semibold mb-7">新規登録マップ</h1>
+	<div class="fixed top-4 right-4 flex space-x-2 z-50">
+		<form id="logout-form" th:action="@{/logout}" method="post">
+			<button type="submit" onclick="return confirm('ログアウトしますか？')"
+				class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+				ログアウト
+			</button>
+		</form>
+		<a th:href="@{/lecture/display}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">前画面へ</a>
+	</div>
+	<div id="side-panel"
+		class="fixed top-0 right-0 w-96 h-full bg-white shadow-lg hidden z-40 transition-transform duration-300">
+		<div class="p-4">
+			<h2 class="text-xl font-bold mb-4">サイドパネル</h2>
+			<h2 id="place-name">名前</h2>
+			<p id="place-address">住所</p>
+
+			<button id="panel-close-button" class="mt-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">閉じる</button>
+			<form th:action="@{/lecture/storeRegister}" th:method="post">
+				<button id="visit-button"
+					class="mt-4 bg-gray-300 px-4 py-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 z-50">訪問</button>
+				<input type="hidden" name="lat" />
+				<input type="hidden" name="lng" />
+				<input type="hidden" name="placeId" />
+			</form>
+		</div>
+	</div>
+
+	<div class="h-full flex flex-col">
+
+
+		<div class="relative flex-1">
+			<div id="map" class="absolute inset-0"></div>
+
+		</div>
+
+		<input id="pac-input" class="w-72 p-2 rounded border bg-white shadow text-sm ml-2 mt-2" type="text"
+			placeholder="場所を検索">
+	</div>
+
+	<script defer
+		th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} +'&language=ja&loading=async&libraries=places,marker&callback=initMap'"></script>
+	<script th:src="@{/javascript/newstore.js}"></script>
+
+	<script>
+		document.getElementById("panel-close-button").addEventListener("click", () => {
+			document.getElementById("side-panel").classList.add("hidden");
+		});
+
+	</script>
+
+
+
+
+</body>
+
+</html>

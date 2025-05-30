@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.levtech.rookie.sutoproject.repository.mybatis.MapMapper">
+
+
+	<resultMap id="mapResultMap" type="jp.levtech.rookie.sutoproject.model.SutoMap">
+    <result property="storelat" column="store_latitude"/>
+    <result property="storelong" column="store_longitude"/>
+    <result property="placeId" column="place_id"/>
+    <result property="memo" column="memo"/>
+    <result property="visit" column="visit"/>
+    <result property="evalation" column="evalation"/>
+	</resultMap>
+	
+	<select id="findAll" resultMap="mapResultMap">
+	
+		SELECT
+			store_latitude ,store_longitude ,place_id,memo,visit,evalation
+		FROM
+			tb_trn_store
+	</select>
+
+	<update id="memoUpdate">
+	
+		UPDATE
+			tb_trn_store
+		SET
+			memo = #{memo}
+		WHERE
+			place_id = #{placeId}
+	</update>
+	
+	<update id="evalationUpdate">
+	
+		UPDATE
+			tb_trn_store
+		SET
+			evalation = #{evalation}
+		WHERE
+			place_id = #{placeId}
+	</update>
+	
+	
+	<insert id="storeRegister">
+	
+		INSERT
+			
+		INTO
+			tb_trn_store(store_latitude,store_longitude,user_id,place_id,memo,visit,evalation,create_user,create_date,update_user,update_date)
+			
+		VALUES
+			 (#{storeLat},#{storeLng},'user',#{placeId},NULL,true,NULL,'user',NOW(),'user',NOW());
+	</insert>
+	
+	
+	
+</mapper>
