@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import jp.levtech.rookie.sutoproject.dto.StoreDto;
 import jp.levtech.rookie.sutoproject.model.SutoMap;
 
 /**
@@ -66,8 +67,28 @@ public class MapRepositoryImpl implements MapRepository {
 	 * 
 	 */
 	@Override
-	public void storeRegister(double storeLat,double storeLng,String placeId) {
-		mapMapper.storeRegister(storeLat,storeLng,placeId);
+	public void storeRegister(double storeLat,double storeLng,String placeId,String storeName) {
+		mapMapper.storeRegister(storeLat,storeLng,placeId,storeName);
+	}
+	
+	
+	/**
+	 * 登録店舗を削除する。
+	 * 
+	 */
+	@Override
+	public void storeDelete(String placeId) {
+		mapMapper.storeDelete(placeId);
+	}
+	
+	
+	/**
+	 * 登録店舗を検索する。
+	 * 
+	 */
+	@Override
+	public List<StoreDto> storeResearch(String storeName) {
+		return mapMapper.storeResearch(storeName);
 	}
 
 }

@@ -41,6 +41,9 @@ public class SutoMap {
 	 */
 	private final Integer evalation;
 	
-	
+	/**
+	 * 店名を表すプロパティ
+	 */
+	private final String storeName;
 
 }

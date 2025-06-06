@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import jp.levtech.rookie.sutoproject.dto.StoreDto;
 import jp.levtech.rookie.sutoproject.model.SutoMap;
 
 /**
@@ -39,7 +40,21 @@ public interface MapMapper {
 	 * 新規店舗を登録する。
 	 * 
 	 */
-	void storeRegister(double storeLat,double storeLng,String placeId);
+	void storeRegister(double storeLat,double storeLng,String placeId,String storeName);
+	
+	/**
+	 * 登録店舗を削除する。
+	 * 
+	 */
+	
+	void storeDelete(String placeId);
+	
+	/**
+	 * 登録店舗を検索する。
+	 * 
+	 */
+	
+	List<StoreDto> storeResearch(String storeName);
 	
 	
 }

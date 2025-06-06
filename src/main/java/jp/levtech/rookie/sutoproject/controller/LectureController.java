@@ -1,6 +1,5 @@
 package jp.levtech.rookie.sutoproject.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,27 +9,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import jp.levtech.rookie.sutoproject.dto.StoreDto;
 import jp.levtech.rookie.sutoproject.model.SutoMap;
 import jp.levtech.rookie.sutoproject.repository.mybatis.MapRepository;
-
 
 @Controller
 @RequestMapping("/lecture")
 public class LectureController {
-	
-	
+
 	/**
 	 * タスクを管理するリポジトリ
 	 */
 	private final MapRepository mapRepository;
-	
-	
-	public LectureController (MapRepository mapRepository) {
+
+	public LectureController(MapRepository mapRepository) {
 		this.mapRepository = mapRepository;
 	}
-	
-	
+
 	@Value("${google.api.key}")
 	private String apiKey;
 	/*
@@ -38,18 +35,18 @@ public class LectureController {
 	 * @param model モデル
 	 * @return テンプレート
 	 */
-	
+
 	@GetMapping("/display")
 	public String index(Model model) {
-		model.addAttribute("googleApiKey",apiKey);
-		
-		List<SutoMap>storeInformation = mapRepository.findAll();
-		model.addAttribute("storeInformation",storeInformation);
-		
-		return "map/display";			
+		model.addAttribute("googleApiKey", apiKey);
+
+		List<SutoMap> storeInformation = mapRepository.findAll();
+		model.addAttribute("storeInformation", storeInformation);
+
+		return "map/display";
 
 	}
-	
+
 	/*
 	 * 新規店舗登録マップ画面
 	 * @param model モデル
@@ -57,15 +54,15 @@ public class LectureController {
 	 */
 	@GetMapping("/newstore")
 	public String newstore(Model model) {
-		model.addAttribute("googleApiKey",apiKey);
-		
-		List<SutoMap>storeInformation = mapRepository.findAll();
-		model.addAttribute("storeInformation",storeInformation);
-		
-		return "map/newstore";			
+		model.addAttribute("googleApiKey", apiKey);
+
+		List<SutoMap> storeInformation = mapRepository.findAll();
+		model.addAttribute("storeInformation", storeInformation);
+
+		return "map/newstore";
 
 	}
-	
+
 	/**
 	 * メモを更新する。
 	 *
@@ -73,32 +70,33 @@ public class LectureController {
 	 * @param placeId プレイスID
 	 * @return テンプレート/リダイレクト
 	 */
-	@PostMapping("/update")
-	public String update(@RequestParam("memo") String memo,@RequestParam("placeId") String placeId) {
-		mapRepository.memoUpdate(memo,placeId);
+	@PostMapping("/updateall")
+	public String updateall(@RequestParam("memo") String memo, @RequestParam("evalation") int evalation,
+			@RequestParam("placeId") String placeId) {
+		mapRepository.memoUpdate(memo, placeId);
+		mapRepository.evalationUpdate(evalation, placeId);
 		// リダイレクトするためのHTTPレスポンスを返す。
 		return "redirect:/lecture/display";
-		
-		
+
 	}
-	
-	/**
-	 * 評価を更新する。
-	 *
-	 * @param taskId タスクID
-	 * @param updateTaskForm タスクを更新するためのフォーム
-	 * @param bindingResult バリデーションの結果
-	 * @return テンプレート/リダイレクト
-	 */
-	@PostMapping("/rankupdate")
-	public String evalationupdate(@RequestParam("evalation") int evalation,@RequestParam("placeId") String placeId) {
-		mapRepository.evalationUpdate(evalation,placeId);
-		// リダイレクトするためのHTTPレスポンスを返す。
-		return "redirect:/lecture/display";
-		
-		
-	}
-	
+
+	//	/**
+	//	 * 評価を更新する。
+	//	 *
+	//	 * @param taskId タスクID
+	//	 * @param updateTaskForm タスクを更新するためのフォーム
+	//	 * @param bindingResult バリデーションの結果
+	//	 * @return テンプレート/リダイレクト
+	//	 */
+	//	@PostMapping("/rankupdate")
+	//	public String evalationupdate(@RequestParam("evalation") int evalation,@RequestParam("placeId") String placeId) {
+	//		mapRepository.evalationUpdate(evalation,placeId);
+	//		// リダイレクトするためのHTTPレスポンスを返す。
+	//		return "redirect:/lecture/display";
+	//		
+	//		
+	//	}
+
 	/**
 	 * 新規店舗を登録する。
 	 *
@@ -108,12 +106,40 @@ public class LectureController {
 	 * @return テンプレート/リダイレクト
 	 */
 	@PostMapping("/storeRegister")
-	public String storeRegister(@RequestParam("lat") double storeLat,@RequestParam("lng") double storeLng,@RequestParam("placeId") String placeId) {
-		mapRepository.storeRegister(storeLat,storeLng,placeId);
+	public String storeRegister(@RequestParam("lat") double storeLat, @RequestParam("lng") double storeLng,
+			@RequestParam("placeId") String placeId,@RequestParam("name") String storeName) {
+		mapRepository.storeRegister(storeLat, storeLng, placeId,storeName);
 		// リダイレクトするためのHTTPレスポンスを返す。
 		return "redirect:/lecture/display";
+
+	}
+
+	/**
+	 * 登録店舗を削除する。
+	 *  
+	 * @param placeId プレイスID
+	 * @return テンプレート/リダイレクト
+	 */
+	@PostMapping("/delete")
+	public String delete(@RequestParam("placeId") String placeId) {
+		mapRepository.storeDelete(placeId);
+		// リダイレクトするためのHTTPレスポンスを返す。
+		return "redirect:/lecture/display";
+
+	}
+
+	/**
+	 * 登録店舗を検索する。
+	 *  
+	 * @param 
+	 * @return テンプレート/リダイレクト
+	 */
+	@GetMapping("/search")
+	@ResponseBody
+	public  List<StoreDto> search(@RequestParam("keyword") String storeName) {
+		return mapRepository.storeResearch(storeName);
 		
 		
 	}
-	
+
 }

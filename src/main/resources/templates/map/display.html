@@ -11,7 +11,7 @@
 	<link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
 
-<body class="h-screen m-0">
+<body class="h-screen overflow-hidden m-0 flex flex-col">
 
 	<h1 class="text-3xl font-semibold mb-7">登録店舗マップ</h1>
 	<div class="fixed top-4 right-4 flex space-x-2 z-50">
@@ -29,44 +29,37 @@
 			<h2 class="text-xl font-bold mb-4">店舗詳細</h2>
 			<h2 id="place-name">名前</h2>
 			<p id="place-address">住所</p>
-			<div class="flex items-center space-x-4">
-				<p id="place-rating">評価</p>
-				<form th:action="@{/lecture/rankupdate}" th:method="post">
-					<select id="update-rank" name="evalation">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-					<input type="hidden" name="placeId" />
+			<div class="flex flex-col space-y-4">
+				<div class="flex item-center space-x-4">
+					<p id="place-rating">評価</p>
+					<form th:action="@{/lecture/updateall}" th:method="post">
+						<select id="update-rank" name="evalation">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
 
-					<button type="submit"
-						class="bg-gray-300 px-4 py-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 z-50">評価を更新</button>
-				</form>
-			</div>
-			<p>ここに好きな内容を表示できます</p>
+				</div>
+				<input type="hidden" name="placeId" />
 
-			<!--		メモ欄-->
-			<div class="mb-4">
-				<form id="update-memo" th:action="@{/lecture/update}" th:method="post">
-					<label for="memo" class="block text-base font-medium text-gray-700 mb-1">メモ</label>
-					<textarea type="text" name="memo" placeholder="ここにメモを入力..."
-						class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+				<label for="memo" class="flex flex-col text-base font-medium text-gray-700 mb-1">メモ:</label>
+				<textarea type="text" name="memo" placeholder="ここにメモを入力..."
+					class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
 
-					<!-- JSでセットするためのhidden input -->
-					<input type="hidden" name="placeId" />
-
-					<button type="submit"
-						class="bg-gray-300 px-4 py-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 z-50">更新</button>
+				<button type="submit"
+					class="bg-gray-300 px-4 py-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 z-50">更新</button>
 				</form>
 
-				<!--		    <textarea id="memo" class="w-full h-40 p-2 border rounded resize-none" placeholder="ここにメモを入力..."></textarea>-->
 			</div>
 
 			<button id="panel-close-button" class="mt-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">閉じる</button>
-			<button id="visit-button"
-				class="mt-4 bg-gray-300 px-4 py-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 z-50">訪問</button>
+			<form id="store-delete" th:action="@{/lecture/delete}" th:method="post">
+				<input type="hidden" name="placeId" />
+				<button id="visit-button"
+					class="mt-4 bg-gray-300 px-4 py-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 z-50">削除</button>
+			</form>
 		</div>
 	</div>
 
@@ -80,7 +73,8 @@
 
 
 		<input id="pac-input" class="w-72 p-2 rounded border bg-white shadow text-sm ml-2 mt-2" type="text"
-			placeholder="場所を検索">
+			placeholder="登録店舗検索">
+		<ul id="suggestions" class="border bg-white w-64 mt-1 absolute z-50 hidden"></ul>
 	</div>
 	<!--		PlaceIdをjsファイルに渡す-->
 	<script th:inline="javascript">
