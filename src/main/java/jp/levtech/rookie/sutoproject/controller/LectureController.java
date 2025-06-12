@@ -20,9 +20,7 @@ import jp.levtech.rookie.sutoproject.repository.mybatis.MapRepository;
 @RequestMapping("/lecture")
 public class LectureController {
 
-	/**
-	 * タスクを管理するリポジトリ
-	 */
+	
 	private final MapRepository mapRepository;
 
 	public LectureController(MapRepository mapRepository) {
@@ -31,12 +29,12 @@ public class LectureController {
 
 	@Value("${google.api.key}")
 	private String apiKey;
+	
 	/*
 	 * 登録店舗マップ画面
 	 * @param model モデル
 	 * @return テンプレート
 	 */
-
 	@GetMapping("/display")
 	public String index(Model model, Principal principal) {
 		model.addAttribute("googleApiKey", apiKey);
