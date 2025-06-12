@@ -10,6 +10,7 @@
 		type="jp.levtech.rookie.sutoproject.model.SutoMap">
 		<result property="storelat" column="store_latitude" />
 		<result property="storelong" column="store_longitude" />
+		<result property="userName" column="user_id" />
 		<result property="placeId" column="place_id" />
 		<result property="memo" column="memo" />
 		<result property="visit" column="visit" />
@@ -27,9 +28,12 @@
 
 		SELECT
 		store_latitude
-		,store_longitude ,place_id,memo,visit,evalation,store_name
+		,store_longitude ,user_id,place_id,memo,visit,evalation,store_name
 		FROM
 		tb_trn_store
+		WHERE
+		user_id = #{userName}
+		
 	</select>
 
 	<update id="memoUpdate">
@@ -62,7 +66,7 @@
 		tb_trn_store(store_latitude,store_longitude,user_id,place_id,memo,visit,evalation,create_user,create_date,update_user,update_date,store_name)
 
 		VALUES
-		(#{storeLat},#{storeLng},'user',#{placeId},NULL,true,NULL,'user',NOW(),'user',NOW(),#{storeName});
+		(#{storeLat},#{storeLng},#{userName},#{placeId},NULL,true,NULL,#{userName},NOW(),#{userName},NOW(),#{storeName});
 	</insert>
 
 	<delete id="storeDelete">

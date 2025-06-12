@@ -1,5 +1,6 @@
 package jp.levtech.rookie.sutoproject.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +38,13 @@ public class LectureController {
 	 */
 
 	@GetMapping("/display")
-	public String index(Model model) {
+	public String index(Model model, Principal principal) {
 		model.addAttribute("googleApiKey", apiKey);
 
-		List<SutoMap> storeInformation = mapRepository.findAll();
+		String userName = principal.getName();
+		List<SutoMap> storeInformation = mapRepository.findAll(userName);
 		model.addAttribute("storeInformation", storeInformation);
+		model.addAttribute("username", userName);
 
 		return "map/display";
 
@@ -53,10 +56,11 @@ public class LectureController {
 	 * @return テンプレート
 	 */
 	@GetMapping("/newstore")
-	public String newstore(Model model) {
+	public String newstore(Model model,Principal principal) {
 		model.addAttribute("googleApiKey", apiKey);
 
-		List<SutoMap> storeInformation = mapRepository.findAll();
+		String userName = principal.getName();
+		List<SutoMap> storeInformation = mapRepository.findAll(userName);
 		model.addAttribute("storeInformation", storeInformation);
 
 		return "map/newstore";
@@ -80,23 +84,6 @@ public class LectureController {
 
 	}
 
-	//	/**
-	//	 * 評価を更新する。
-	//	 *
-	//	 * @param taskId タスクID
-	//	 * @param updateTaskForm タスクを更新するためのフォーム
-	//	 * @param bindingResult バリデーションの結果
-	//	 * @return テンプレート/リダイレクト
-	//	 */
-	//	@PostMapping("/rankupdate")
-	//	public String evalationupdate(@RequestParam("evalation") int evalation,@RequestParam("placeId") String placeId) {
-	//		mapRepository.evalationUpdate(evalation,placeId);
-	//		// リダイレクトするためのHTTPレスポンスを返す。
-	//		return "redirect:/lecture/display";
-	//		
-	//		
-	//	}
-
 	/**
 	 * 新規店舗を登録する。
 	 *
@@ -107,8 +94,9 @@ public class LectureController {
 	 */
 	@PostMapping("/storeRegister")
 	public String storeRegister(@RequestParam("lat") double storeLat, @RequestParam("lng") double storeLng,
-			@RequestParam("placeId") String placeId,@RequestParam("name") String storeName) {
-		mapRepository.storeRegister(storeLat, storeLng, placeId,storeName);
+			@RequestParam("placeId") String placeId,@RequestParam("name") String storeName,Principal principal) {
+		String userName = principal.getName();
+		mapRepository.storeRegister(storeLat, storeLng, placeId,storeName,userName);
 		// リダイレクトするためのHTTPレスポンスを返す。
 		return "redirect:/lecture/display";
 

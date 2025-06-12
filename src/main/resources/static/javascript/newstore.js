@@ -14,12 +14,17 @@ function initMap() {
 		radius: 1000,
 		type: "restaurant"
 	};
+	function clickmap(map,location) {
+		//初期マップ表示  
+			const defaultmap = new google.maps.places.PlacesService(map);
+			const request = {
+				location: map.getCenter(),
+				radius: 1000,
+				type: "restaurant"
+			};
 	defaultmap.nearbySearch(request, (results, status) => {
 		if (status === google.maps.places.PlacesServiceStatus.OK && results) {
 			results.forEach((place) => {
-				console.log("名前:", place.name);
-				console.log("プレイスid:", place.place_id);
-				console.log("場所:", place.geometry.location.toString());
 
 				//				マーカーを表示
 				const marker = new google.maps.marker.AdvancedMarkerElement({
@@ -27,6 +32,7 @@ function initMap() {
 					position: place.geometry.location,
 					title: place.name,
 				});
+				
 				//クリックして詳細情報を表示
 				marker.addListener("gmp-click", async () => {
 					console.log("マーカーがクリックされました！");
@@ -38,12 +44,12 @@ function initMap() {
 							service.getDetails(
 								{
 									placeId: placeId,
-									fields: ["name", "formatted_address", "geometry","photos"],
+									fields: ["name", "formatted_address", "geometry", "photos"],
 								},
 								(place, status) => {
 									if (status === google.maps.places.PlacesServiceStatus.OK) {
 										resolve(place);
-										
+
 
 									} else {
 										console.error("Place の取得に失敗:", status);
@@ -57,9 +63,9 @@ function initMap() {
 					fetchPlaceDetails(map, originalPlaceId)
 						.then(placeDetails => {
 							//登録済店舗かどうかをチェック
-							console.log("check",storeInformation);
+							console.log("check", storeInformation);
 							const isAlreadyRegistered = storeInformation.some(store => store.placeId === originalPlaceId);
-							if(isAlreadyRegistered) {
+							if (isAlreadyRegistered) {
 								alert("この店舗は既に登録されています");
 								document.getElementById("visit-button").classList.add("hidden");
 							}
@@ -70,36 +76,36 @@ function initMap() {
 							location.lat = placeDetails.geometry.location.lat();
 							location.lng = placeDetails.geometry.location.lng();
 							//写真を表示する機能
-							if(placeDetails.photos && placeDetails.photos.length> 0) {
+							if (placeDetails.photos && placeDetails.photos.length > 0) {
 								const photoContainer = document.getElementById("google-photo");
 								photoContainer.innerHTML = "";//既存写真をクリア
-								
+
 								const attributionSet = new Set();
-								
+
 								placeDetails.photos.forEach(photo => {
 									const img = document.createElement("img")
-									img.src= photo.getUrl({maxWidth:400});
+									img.src = photo.getUrl({ maxWidth: 400 });
 									img.className = "inline-block w-32 h-auto rounded object-cover";
 									photoContainer.appendChild(img);
-									
+
 									//著作権表記
 									(photo.html_attributions || []).forEach(attr => attributionSet.add(attr));
-									});
+								});
 
-									// attribution 一括で表示
-									if (attributionSet.size > 0) {
-										const attributionDiv = document.createElement("div");
-										attributionDiv.className = "text-xs mt-2 text-gray-500";
-										attributionDiv.innerHTML = Array.from(attributionSet).join("<br>");
-										photoContainer.appendChild(attributionDiv);
-									}
-								
+								// attribution 一括で表示
+								if (attributionSet.size > 0) {
+									const attributionDiv = document.createElement("div");
+									attributionDiv.className = "text-xs mt-2 text-gray-500";
+									attributionDiv.innerHTML = Array.from(attributionSet).join("<br>");
+									photoContainer.appendChild(attributionDiv);
+								}
+
 							}
 
 							document.getElementById("side-panel").classList.remove("hidden");
 							document.getElementById("place-name").textContent = "名前:" + placeDetails.name;
 							document.getElementById("place-address").textContent = "住所:" + placeDetails.formatted_address || "住所情報なし";
-						
+
 
 							console.log("コントローラーに渡すplaceId:", location.placeId);
 							console.log("コントローラーに渡すstoreLat:", location.lat);
@@ -121,14 +127,15 @@ function initMap() {
 			console.warn("結果なし", status);
 		}
 	});
-
+	}
+	clickmap(map, map.getCenter());
 
 	// ←検索窓  
 	const input = document.getElementById("pac-input");
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	//検索機能
 	const autocomplete = new google.maps.places.Autocomplete(input, {
-		fields: ["place_id", "geometry", "name"],
+		fields: ["name", "formatted_address", "geometry", "photos"],
 		types: ["establishment"],
 	});
 	autocomplete.bindTo("bounds", map); // ビューポートに応じた候補に絞る
@@ -143,10 +150,41 @@ function initMap() {
 
 		// 地図を検索された場所へ移動
 		map.panTo(place.geometry.location);
-		map.setZoom(13);
+		map.setZoom(16);
+
+		const searchresultmap = new google.maps.places.PlacesService(map);
+		const request = {
+			location: map.getCenter(),
+			radius: 1000,
+			type: "restaurant"
+		};
+		
+		clickmap(map, place.geometry.location);
+//		searchresultmap.nearbySearch(request, (results, status) => {
+//			if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+//				results.forEach((place) => {
+//
+//
+//					//				マーカーを表示
+//					const marker = new google.maps.marker.AdvancedMarkerElement({
+//						map,
+//						position: place.geometry.location,
+//						title: place.name,
+//						
+//						
+//					});
+//					
+//					
+//					
+//					
+//					
+//
+//				});
+//
+//
+//
+//
+//			}
+//		});
 	});
-
-
-
-
 }

@@ -6,32 +6,6 @@ function initMap() {
 		mapId: "DEMO_MAP_ID", // カスタムMap IDが必要（なくても動くけど推奨される）
 	});
 
-
-	//↓地図位置検索機能
-	//	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); 
-	//	//検索機能
-	//	const autocomplete = new google.maps.places.Autocomplete(input, {
-	//	  fields: ["place_id", "geometry", "name"],
-	//	  types: ["establishment"], 
-	//	});
-	//	autocomplete.bindTo("bounds", map); // ビューポートに応じた候補に絞る
-	//	
-	//	autocomplete.addListener("place_changed", () => {
-	//	  const place = autocomplete.getPlace();
-	//
-	//	  if (!place.geometry || !place.geometry.location) {
-	//	    alert("場所の詳細が見つかりませんでした");
-	//	    return;
-	//	  }
-	//
-	//	  // 地図を検索された場所へ移動
-	//	  map.panTo(place.geometry.location);
-	//	  map.setZoom(13);
-	//	  });
-
-
-
-
 	storeInformation.forEach(storeInformation => {
 		console.log("Place ID:", storeInformation.placeId);
 	});
@@ -95,6 +69,8 @@ function initMap() {
 	});
 
 	// ←検索窓  
+	const input = document.getElementById("pac-input");
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	const searchBox = document.getElementById("pac-input");
 	const suggestions = document.getElementById("suggestions");
 

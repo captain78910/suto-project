@@ -30,7 +30,7 @@ public class WebSecurityConfig {
 					//ログイン画面のパスを/loginに設定する
 					.loginPage("/login")
 					//ログインできたらマップページへリダイレクト
-					.defaultSuccessUrl("/lecture/display")	//ログイン画面へのアクセスを全ユーザーに許可する。
+					.defaultSuccessUrl("/lecture/display",true)	//ログイン画面へのアクセスを全ユーザーに許可する。
 					.permitAll()
 			)
 			//ログアウトに関する設定

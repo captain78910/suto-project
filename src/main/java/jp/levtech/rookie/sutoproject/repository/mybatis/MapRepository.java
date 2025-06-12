@@ -17,7 +17,7 @@ public interface MapRepository {
 	 * @return placeId
 	 */
 	
-	public List<SutoMap> findAll();
+	public List<SutoMap> findAll(String userName);
 	
 	/**
 	 * memoを更新する。
@@ -37,7 +37,7 @@ public interface MapRepository {
 	 * 新規店舗を登録する。
 	 * 
 	 */
-	void storeRegister(double storeLat,double storeLng,String placeId,String storeName);
+	void storeRegister(double storeLat,double storeLng,String placeId,String storeName,String userName);
 	
 	/**
 	 * 登録店舗を削除する。

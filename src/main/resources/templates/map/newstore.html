@@ -12,8 +12,9 @@
 </head>
 
 <body class="h-screen overflow-hidden m-0 flex flex-col">
-
-	<h1 class="text-3xl font-semibold mb-7">新規登録マップ</h1>
+	<header class="flex items-center justify-center p-4 bg-blue-900 text-white shadow-md">
+		<h1 class="text-3xl font-bold">新規登録マップ</h1>
+	</header>
 	<div class="fixed top-4 right-4 flex space-x-2 z-50">
 		<form id="logout-form" th:action="@{/logout}" method="post">
 			<button type="submit" onclick="return confirm('ログアウトしますか？')"
@@ -24,12 +25,15 @@
 		<a th:href="@{/lecture/display}"
 			class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">前画面へ</a>
 	</div>
+	
 	<div id="side-panel"
 		class="fixed top-0 right-0 w-96 h-full bg-white shadow-lg hidden z-40 transition-transform duration-300">
 		<div class="p-4">
+			<div class="w-80 shadow-lg rounded-xl p-4">
 			<h2 class="text-xl font-bold mb-4">店舗詳細</h2>
 			<h2 id="place-name">名前</h2>
 			<p id="place-address">住所</p>
+			</div>
 			<div id="google-photo" class="overflow-x-auto whitespace-nowrap space-x-2 flex"> </div>
 
 			<button id="panel-close-button" class="mt-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">閉じる</button>

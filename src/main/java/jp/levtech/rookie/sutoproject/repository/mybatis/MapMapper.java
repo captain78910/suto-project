@@ -19,7 +19,7 @@ public interface MapMapper {
 	 * @return placeId
 	 */
 	
-	List<SutoMap> findAll();
+	List<SutoMap> findAll(String userName);
 	
 	
 	/**
@@ -40,7 +40,7 @@ public interface MapMapper {
 	 * 新規店舗を登録する。
 	 * 
 	 */
-	void storeRegister(double storeLat,double storeLng,String placeId,String storeName);
+	void storeRegister(double storeLat,double storeLng,String placeId,String storeName,String userName);
 	
 	/**
 	 * 登録店舗を削除する。

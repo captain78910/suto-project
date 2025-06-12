@@ -19,8 +19,8 @@
 		<a href="login.html" th:href="@{/login}" sec:authorize="isAnonymous()" class="text-blue-500 hover:underline">ログイン</a>
 		<!--/* サインイン画面へ遷移するためのリンク。 */-->
 		<a href="signin.html" th:href="@{/signin}" sec:authorize="isAnonymous()"class="text-blue-500 hover:underline">サインイン</a>
-		<!--/*ToDo一覧画面へ遷移するためのりんく*/-->
-		<a href="../todo/index.html" th:href="@{/todo/}" sec:authorize="isAuthenticated()">ToDo一覧</a>
+		<!--/*登録マップ画面へ遷移するためのりんく*/-->
+		<a href="../todo/index.html" th:href="@{/lecture/display}" sec:authorize="isAuthenticated()">マップへ移動</a>
 	</div>
 </body>
 </html>

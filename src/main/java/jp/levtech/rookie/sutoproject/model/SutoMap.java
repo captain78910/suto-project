@@ -21,6 +21,11 @@ public class SutoMap {
 	private final double storelong;
 	
 	/**
+	 * ユーザー名を表すプロパティ
+	 */
+	private final String userName;
+	
+	/**
 	 * googleのplaceIDを表すプロパティ
 	 */
 	private final String placeId;

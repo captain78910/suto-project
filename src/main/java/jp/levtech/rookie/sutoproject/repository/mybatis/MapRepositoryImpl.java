@@ -38,8 +38,8 @@ public class MapRepositoryImpl implements MapRepository {
 	 * 店情報を読み込む。
 	 */
 	@Override
-	public List<SutoMap> findAll() {
-		return mapMapper.findAll();
+	public List<SutoMap> findAll(String userName) {
+		return mapMapper.findAll(userName);
 	}
 	
 	/**
@@ -67,8 +67,8 @@ public class MapRepositoryImpl implements MapRepository {
 	 * 
 	 */
 	@Override
-	public void storeRegister(double storeLat,double storeLng,String placeId,String storeName) {
-		mapMapper.storeRegister(storeLat,storeLng,placeId,storeName);
+	public void storeRegister(double storeLat,double storeLng,String placeId,String storeName,String userName) {
+		mapMapper.storeRegister(storeLat,storeLng,placeId,storeName,userName);
 	}
 	
 	
